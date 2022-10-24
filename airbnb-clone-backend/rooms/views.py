@@ -12,6 +12,7 @@ from rest_framework.exceptions import (
     ParseError,
     PermissionDenied,
 )
+from reviews.serializers import ReviewSerializer
 
 
 class Amenities(APIView):
@@ -148,3 +149,25 @@ class RoomDetail(APIView):
             return Response(RoomDetailSerializer(updated_room).data)
         else:
             return Response(serializer.errors)
+
+
+class RoomReviews(APIView):
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            return NotFound
+
+    def get(self, request, pk):
+        try:
+            page = int(request.query_params.get("page", 1))  # 1=default
+        except ValueError:
+            page = 1  # if query params != integer
+        page_size = 3
+        page_start, page_end = (page - 1) * page_size, page * page_size
+        room = self.get_object(pk)
+        serializer = ReviewSerializer(
+            room.reviews.all()[page_start:page_end],
+            many=True,
+        )
+        return Response(serializer.data)
