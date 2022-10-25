@@ -13,6 +13,7 @@ from rest_framework.exceptions import (
     PermissionDenied,
 )
 from reviews.serializers import ReviewSerializer
+from django.conf import settings
 
 
 class Amenities(APIView):
@@ -163,7 +164,7 @@ class RoomReviews(APIView):
             page = int(request.query_params.get("page", 1))  # 1=default
         except ValueError:
             page = 1  # if query params != integer
-        page_size = 3
+        page_size = settings.PAGE_SIZE
         page_start, page_end = (page - 1) * page_size, page * page_size
         room = self.get_object(pk)
         serializer = ReviewSerializer(
@@ -171,3 +172,8 @@ class RoomReviews(APIView):
             many=True,
         )
         return Response(serializer.data)
+
+
+class RoomPhotos(APIView):
+    def post(self, request):
+        pass
