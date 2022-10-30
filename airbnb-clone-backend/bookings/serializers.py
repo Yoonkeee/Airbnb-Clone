@@ -27,8 +27,18 @@ class CreateRoomBookingSerializer(serializers.ModelSerializer):
         now = timezone.localtime(timezone.now()).date()
         if now > value:
             raise serializers.ValidationError("날짜가 이상함")
-        # value = validate_field
+        # value = validate_fieldㅇ
         return value
+
+    def validate(self, data):
+        if data["check_out"] <= data["check_in"]:
+            raise serializers.ValidationError("체크인 이후에 체크아웃하셈")
+        if Booking.objects.filter(
+            check_in__gte=data["check_out"],
+            check_out__lte=data["check_in"],
+        ).exists():
+            raise serializers.ValidationError("예약중복")
+        return data
 
 
 class PublicBookingSerializer(serializers.ModelSerializer):
