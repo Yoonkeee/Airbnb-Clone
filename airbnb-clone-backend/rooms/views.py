@@ -1,4 +1,6 @@
-from unicodedata import category
+from django.conf import settings
+from django.utils import timezone
+from categories import serializers
 from .models import Amenity, Room
 from django.db import transaction
 from categories.models import Category
@@ -13,9 +15,10 @@ from rest_framework.exceptions import (
     PermissionDenied,
 )
 from reviews.serializers import ReviewSerializer
-from django.conf import settings
 from medias.serializers import PhotoSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from bookings.models import Booking
+from bookings.serializers import PublicBookingSerializer
 
 
 class Amenities(APIView):
@@ -207,3 +210,28 @@ class RoomPhotos(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+
+
+class RoomBookings(APIView):
+
+    permission_classes = [
+        IsAuthenticatedOrReadOnly
+    ]  # anybody can use get method but auth. can put, delete, ..
+
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            raise NotFound
+
+    def get(self, request, pk):
+        room = self.get_object(pk=pk)
+        now = timezone.localtime(timezone.now()).date()
+
+        bookings = Booking.objects.filter(
+            room=room,
+            kind=Booking.BookingKindChoices.ROOM,
+            check_in__gt=now,
+        )
+        serializers = PublicBookingSerializer(bookings, many=True)
+        return Response(serializers.data)
