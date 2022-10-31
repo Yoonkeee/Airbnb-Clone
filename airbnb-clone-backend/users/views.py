@@ -1,3 +1,5 @@
+from urllib import response
+from django.contrib import auth
 from functools import partial
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -71,3 +73,29 @@ class ChangePassword(APIView):
             return Response(status=status.HTTP_200_OK)
         else:
             raise exceptions.ParseError
+
+
+class LogIn(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        if not username or not password:
+            raise exceptions.ParseError
+        user = auth.authenticate(
+            request,
+            username=username,
+            password=password,
+        )
+        if user:
+            auth.login(request, user)
+            return Response({"ok": "어서오세여"})
+        else:
+            return Response({"error": "비번 틀림"})
+
+
+class LogOut(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        auth.logout(request)
+        return response({"ok": "로그아웃됨"})
