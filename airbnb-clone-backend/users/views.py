@@ -7,6 +7,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from . import serializers, models
 from rest_framework import exceptions
+import jwt
+from django.conf import settings
 
 
 class Me(APIView):
@@ -99,3 +101,21 @@ class LogOut(APIView):
     def post(self, request):
         auth.logout(request)
         return response({"ok": "로그아웃됨"})
+
+
+class JWTLogIn(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        if not username or not password:
+            raise exceptions.ParseError
+        user = auth.authenticate(
+            request,
+            username=username,
+            password=password,
+        )
+        if user:
+            token = jwt.encode({"pk": user.pk}, settings.SECRET_KEY, algorithm="HS256")
+            return Response({"token": token})
+        else:
+            return Response({"error": "비번 틀림"})
