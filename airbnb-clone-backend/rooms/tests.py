@@ -1,5 +1,6 @@
 from rest_framework.test import APITestCase
 from . import models
+from users.models import User
 
 
 class TestAmenities(APITestCase):
@@ -94,3 +95,20 @@ class TestAmenity(APITestCase):
     def test_delete_amenity(self):
         response = self.client.delete("/api/rooms/amenities/1")
         self.assertEqual(response.status_code, 204)
+
+
+class TestRooms(APITestCase):
+    def setUp(self):
+        user = User.objects.create(username="testcase")
+        user.set_password("1")
+        user.save()
+        self.user = user
+
+    def test_create_room(self):
+        response = self.client.post("/api/rooms/")
+        self.assertEqual(response.status_code, 403)
+
+        self.client.force_login(self.user)
+
+        response = self.client.post("/api/rooms/")
+        print(response.json())
