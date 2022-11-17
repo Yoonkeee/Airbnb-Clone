@@ -28,7 +28,7 @@ export default function Room() {
           <Text as={"b"} noOfLines={1} fontSize={"md"}>
             그라스 밸리(Grass Valley), 캘리포니아, 미국
           </Text>
-          <HStack spacing={1}>
+          <HStack _hover={{ color: "red" }} spacing={1}>
             <FaStar size={15} />
             <Text>5.0</Text>
           </HStack>

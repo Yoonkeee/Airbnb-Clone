@@ -5,6 +5,8 @@ import {
   Heading,
   HStack,
   Image,
+  Skeleton,
+  SkeletonText,
   Text,
   useColorModeValue,
   VStack,
@@ -32,6 +34,11 @@ export default function Home() {
       ].map((index) => (
         <Room key={index} />
       ))}
+
+      {/*<Box>*/}
+      {/*  <Skeleton rounded={"2xl"} height={280} mb={8} />*/}
+      {/*  <SkeletonText w={"50%"} noOfLines={3} />*/}
+      {/*</Box>*/}
     </Grid>
   );
 }
