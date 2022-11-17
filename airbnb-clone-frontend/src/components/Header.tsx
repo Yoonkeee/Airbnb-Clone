@@ -20,7 +20,7 @@ export default function Header() {
   const logoColor = useColorModeValue("red.500", "red.200");
   const Icon = useColorModeValue(FaMoon, FaSun);
   return (
-    <HStack justifyContent={"space-between"} px={"10"} py={"5"} borderBottomWidth={1}>
+    <HStack justifyContent={"space-between"} px={"40"} py={"5"} borderBottomWidth={1}>
       <Box color={logoColor}>
         <SiTesla size={"48"} />
       </Box>
