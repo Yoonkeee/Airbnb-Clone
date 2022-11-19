@@ -1,7 +1,5 @@
-const BASE_URL = "http://127.0.0.1:8000/api";
-
-export async function getRooms() {
-  const response = await fetch(`${BASE_URL}/rooms/`);
-  const json = await response.json();
-  return json;
-}
+import axios from "axios";
+const instance = axios.create({
+  baseURL: "http://127.0.0.1:8000/api/",
+});
+export const getRooms = () => instance.get("rooms/").then((response) => response.data);
