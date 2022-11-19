@@ -3,5 +3,8 @@
   "editor.formatOnSave": true,
   "[sql]": {
     "editor.defaultFormatter": "mtxr.sqltools"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
   }
 }
