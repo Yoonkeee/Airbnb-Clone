@@ -12,7 +12,7 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>회원가 모달창</ModalHeader>
+        <ModalHeader>회원가입 모달창</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <VStack>
