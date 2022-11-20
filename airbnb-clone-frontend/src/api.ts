@@ -2,6 +2,7 @@ import axios from "axios";
 import { QueryFunctionContext } from "@tanstack/react-query";
 const instance = axios.create({
   baseURL: "http://127.0.0.1:8000/api/",
+  withCredentials: true,
 });
 export const getRooms = () => instance.get("rooms/").then((response) => response.data);
 export const getRoom = ({ queryKey }: QueryFunctionContext) => {

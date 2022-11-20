@@ -54,7 +54,7 @@ export default function Header() {
               </LightMode>
             </>
           ) : (
-            <Avatar size={"md"} />
+            <Avatar size={"md"} src={user.avatar} />
           )
         ) : null}
       </HStack>
