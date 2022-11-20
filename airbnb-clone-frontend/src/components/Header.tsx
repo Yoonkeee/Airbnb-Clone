@@ -5,16 +5,22 @@ import {
   HStack,
   IconButton,
   LightMode,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   useColorMode,
   useColorModeValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { SiTesla } from "react-icons/si";
 import { FaMoon, FaSun } from "react-icons/fa";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 import useUser from "../lib/useUser";
+import { logOut } from "../api";
 
 export default function Header() {
   const { userLoading, isLoggedIn, user } = useUser();
@@ -23,6 +29,25 @@ export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
   const logoColor = useColorModeValue("red.500", "red.200");
   const Icon = useColorModeValue(FaMoon, FaSun);
+  const toast = useToast();
+  const onLogOut = async () => {
+    // const data = await logOut();
+    const toastId = toast({
+      title: "로그아웃 중...",
+      description: "ㄱㄷㄱㄷ",
+      status: "loading",
+      position: "top-right",
+      isClosable: true,
+    });
+    setTimeout(() => {
+      toast.update(toastId, {
+        status: "success",
+        title: "ㅂㅂ",
+        description: "또오셈",
+        duration: 500,
+      });
+    }, 1000);
+  };
   return (
     <Stack
       alignItems={"center"}
@@ -54,7 +79,14 @@ export default function Header() {
               </LightMode>
             </>
           ) : (
-            <Avatar size={"md"} src={user.avatar} />
+            <Menu>
+              <MenuButton>
+                <Avatar size={"md"} src={user.avatar} />
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={onLogOut}>로그아웃</MenuItem>
+              </MenuList>
+            </Menu>
           )
         ) : null}
       </HStack>
