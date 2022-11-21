@@ -119,3 +119,8 @@ class JWTLogIn(APIView):
             return Response({"token": token})
         else:
             return Response({"error": "비번 틀림"})
+
+class GithubLogin(APIView):
+    def post(self, request):
+        code = request.data.get('code')
+        
