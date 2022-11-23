@@ -7,19 +7,34 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='House',
+            name="House",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=140)),
-                ('price_per_night', models.PositiveBigIntegerField(help_text='Positive Numbers Only', verbose_name='Price')),
-                ('description', models.TextField()),
-                ('address', models.CharField(max_length=140)),
-                ('pets_allowed', models.BooleanField(default=True, verbose_name='Pets Allowed?')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=140)),
+                (
+                    "price_per_night",
+                    models.PositiveBigIntegerField(
+                        help_text="Positive Numbers Only", verbose_name="Price"
+                    ),
+                ),
+                ("description", models.TextField()),
+                ("address", models.CharField(max_length=140)),
+                (
+                    "pets_allowed",
+                    models.BooleanField(default=True, verbose_name="Pets Allowed?"),
+                ),
             ],
         ),
     ]

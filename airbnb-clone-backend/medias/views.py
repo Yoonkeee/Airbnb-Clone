@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 import requests
 from django.conf import settings
 
+
 class PhotoDetail(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -25,6 +26,7 @@ class PhotoDetail(APIView):
             raise PermissionDenied
         photo.delete()
         return Response(HTTP_200_OK)
+
 
 class GetUploadURL(APIView):
     def post(self, request):
