@@ -34,8 +34,7 @@ export default function GithubConfirm() {
     }
   };
   useEffect(() => {
-    const params = new URLSearchParams(search);
-    const code = params.get("code");
+    confirmLogin();
   }, []);
   return (
     <VStack justifyContent={"center"} mt={40}>

@@ -103,7 +103,7 @@ class LogOut(APIView):
 
     def post(self, request):
         auth.logout(request)
-        return response({"ok": "로그아웃됨"})
+        return Response({"ok": "로그아웃됨"})
 
 
 class JWTLogIn(APIView):
@@ -144,14 +144,13 @@ class GithubLogin(APIView):
             )
             user_data = user_data.json()
             user_emails = requests.get(
-                "https://api.github.com/emails",
+                "https://api.github.com/user/emails",
                 headers={
                     "Authorization": f"Bearer {access_token}",
                     "Accept": "application/json",
                 },
             )
             user_emails = user_emails.json()
-
             try:
                 user = User.objects.get(email=user_emails[0]["email"])
                 login(request, user)
@@ -167,7 +166,5 @@ class GithubLogin(APIView):
                 user.save()
                 login(request, user)
                 return Response(status=status.HTTP_200_OK)
-
-            return Response()
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
