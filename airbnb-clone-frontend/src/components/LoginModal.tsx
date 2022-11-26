@@ -9,46 +9,43 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { FaKey, FaUserCheck } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
 import { useState } from "react";
-
+import { useForm } from "react-hook-form";
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
+interface IForm {
+  username: string;
+  password: string;
+}
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const onChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-    if (name === "username") {
-      setUsername(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
-  };
-  const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IForm>();
+  const onSubmit = (data: IForm) => {};
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>로그인 모달창</ModalHeader>
         <ModalCloseButton />
-        <ModalBody as={"form"} onSubmit={onSubmit as any}>
+        <ModalBody as={"form"} onSubmit={handleSubmit(onSubmit)}>
           <VStack>
             <InputGroup>
               <InputLeftElement children={<FaUserCheck color={"gray"} />} />
               <Input
+                isInvalid={Boolean(errors.username?.message)}
                 required
-                name={"username"}
-                onChange={onChange}
-                value={username}
+                {...register("username", { required: "아이디 입력하셔야죠" })}
                 variant={"filled"}
                 placeholder={"아이디 입력하셈"}
               />
@@ -56,10 +53,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             <InputGroup>
               <InputLeftElement children={<FaKey color={"gray"} />} />
               <Input
+                isInvalid={Boolean(errors.password?.message)}
                 required
-                name={"password"}
-                onChange={onChange}
-                value={password}
+                {...register("password", { required: "비번도 입력하셔야죠" })}
                 type={"password"}
                 variant={"filled"}
                 placeholder={"비번 입력하셈"}
