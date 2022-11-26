@@ -30,6 +30,7 @@ export default function KakaoConfirm() {
           title: "어서오셈",
           description: "ㅎㅇㅎㅇ",
           position: "top-right",
+          duration: 500,
         });
         queryClient.refetchQueries(["me"]);
         navigate("/");
