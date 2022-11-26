@@ -10,12 +10,20 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { FaKey, FaUserCheck } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import {
+  IUsernameLoginError,
+  IUsernameLoginSuccess,
+  IUsernameLoginVariables,
+  usernameLogin,
+} from "../api";
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -30,7 +38,24 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<IForm>();
-  const onSubmit = (data: IForm) => {};
+  const toast = useToast();
+  const mutation = useMutation<
+    IUsernameLoginSuccess,
+    IUsernameLoginError,
+    IUsernameLoginVariables
+  >(usernameLogin, {
+    onMutate: () => {},
+    onSuccess: (data) => {
+      // data.ok;
+      toast({ title: "ㅎㅇㅎㅇ", status: "success" });
+    },
+    onError: (error) => {
+      // error.error;
+    },
+  });
+  const onSubmit = (data: IForm) => {
+    console.log(data);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -44,7 +69,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               <InputLeftElement children={<FaUserCheck color={"gray"} />} />
               <Input
                 isInvalid={Boolean(errors.username?.message)}
-                required
+                // required
                 {...register("username", { required: "아이디 입력하셔야죠" })}
                 variant={"filled"}
                 placeholder={"아이디 입력하셈"}
@@ -54,7 +79,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               <InputLeftElement children={<FaKey color={"gray"} />} />
               <Input
                 isInvalid={Boolean(errors.password?.message)}
-                required
+                // required
                 {...register("password", { required: "비번도 입력하셔야죠" })}
                 type={"password"}
                 variant={"filled"}
@@ -62,7 +87,13 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               />
             </InputGroup>
           </VStack>
-          <Button type={"submit"} mt={"2rem"} w={"100%"} colorScheme={"red"}>
+          <Button
+            isLoading={mutation.isLoading}
+            type={"submit"}
+            mt={"2rem"}
+            w={"100%"}
+            colorScheme={"red"}
+          >
             눌러유
           </Button>
           <SocialLogin />
