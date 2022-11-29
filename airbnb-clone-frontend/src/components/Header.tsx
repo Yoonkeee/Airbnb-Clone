@@ -10,6 +10,7 @@ import {
   MenuItem,
   MenuList,
   Stack,
+  ToastId,
   useColorMode,
   useColorModeValue,
   useDisclosure,
@@ -21,7 +22,8 @@ import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 import useUser from "../lib/useUser";
 import { logOut } from "../api";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRef } from "react";
 
 export default function Header() {
   const { userLoading, isLoggedIn, user } = useUser();
@@ -40,25 +42,33 @@ export default function Header() {
   const Icon = useColorModeValue(FaMoon, FaSun);
   const toast = useToast();
   const queryClient = useQueryClient();
+  const toastId = useRef<ToastId>();
+  const mutation = useMutation(logOut, {
+    onMutate: () => {
+      toastId.current = toast({
+        title: "로그아웃 중...",
+        description: "ㄱㄷㄱㄷ",
+        status: "loading",
+        position: "top-right",
+        isClosable: true,
+        duration: 500,
+      });
+    },
+    onSuccess: () => {
+      if (toastId.current) {
+        queryClient.refetchQueries(["me"]);
+        toast.update(toastId.current, {
+          status: "success",
+          title: "ㅂㅂ",
+          description: "또오셈",
+          duration: 500,
+        });
+      }
+    },
+  });
   const onLogOut = async () => {
     // const data = await logOut();
-    const toastId = toast({
-      title: "로그아웃 중...",
-      description: "ㄱㄷㄱㄷ",
-      status: "loading",
-      position: "top-right",
-      isClosable: true,
-      duration: 500,
-    });
     await logOut();
-    queryClient.refetchQueries(["me"]);
-
-    toast.update(toastId, {
-      status: "success",
-      title: "ㅂㅂ",
-      description: "또오셈",
-      duration: 500,
-    });
   };
   return (
     <Stack
@@ -93,7 +103,7 @@ export default function Header() {
           ) : (
             <Menu>
               <MenuButton>
-                <Avatar size={"md"} src={user.avatar} />
+                <Avatar size={"md"} src={user?.avatar} />
               </MenuButton>
               <MenuList>
                 <MenuItem onClick={onLogOut}>로그아웃</MenuItem>

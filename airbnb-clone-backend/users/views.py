@@ -95,7 +95,7 @@ class LogIn(APIView):
             auth.login(request, user)
             return Response({"ok": "어서오세여"})
         else:
-            return Response({"error": "비번 틀림"})
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogOut(APIView):
@@ -173,7 +173,6 @@ class GithubLogin(APIView):
 class kakaoLogin(APIView):
     def post(self, request):
         try:
-
             code = request.data.get("code")
             access_token = requests.post(
                 "https://kauth.kakao.com/oauth/token",

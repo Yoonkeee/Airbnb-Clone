@@ -15,9 +15,9 @@ import {
 } from "@chakra-ui/react";
 import { FaKey, FaUserCheck } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   IUsernameLoginError,
   IUsernameLoginSuccess,
@@ -37,24 +37,29 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IForm>();
   const toast = useToast();
-  const mutation = useMutation<
-    IUsernameLoginSuccess,
-    IUsernameLoginError,
-    IUsernameLoginVariables
-  >(usernameLogin, {
-    onMutate: () => {},
-    onSuccess: (data) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(usernameLogin, {
+    onSuccess: () => {
       // data.ok;
-      toast({ title: "ㅎㅇㅎㅇ", status: "success" });
+      toast({
+        title: "ㅎㅇㅎㅇ",
+        status: "success",
+        position: "top-right",
+        duration: 500,
+      });
+      onClose();
+      queryClient.refetchQueries(["me"]);
+      reset();
     },
-    onError: (error) => {
-      // error.error;
+    onError: () => {
+      console.log("tt");
     },
   });
-  const onSubmit = (data: IForm) => {
-    console.log(data);
+  const onSubmit = ({ username, password }: IForm) => {
+    mutation.mutate({ username, password });
   };
 
   return (
@@ -87,6 +92,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               />
             </InputGroup>
           </VStack>
+          {mutation.isError ? (
+            <Text color={"red.500"} textAlign={"center"} fontSize={"xl"}>
+              아디나 비번이 틀렸잖아요
+            </Text>
+          ) : null}
           <Button
             isLoading={mutation.isLoading}
             type={"submit"}
@@ -94,7 +104,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             w={"100%"}
             colorScheme={"red"}
           >
-            눌러유
+            눌러보셈
           </Button>
           <SocialLogin />
         </ModalBody>
