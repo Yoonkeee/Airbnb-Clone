@@ -20,6 +20,7 @@ export default function KakaoConfirm() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const confirmLogin = async () => {
+    // TODO: useMutation Refactoring
     const params = new URLSearchParams(search);
     const code = params.get("code");
     if (code) {

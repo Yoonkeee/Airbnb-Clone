@@ -95,6 +95,7 @@ export default function Header() {
             <>
               <Button onClick={onLoginOpen}>로긴</Button>
               <LightMode>
+                {/*TODO: 회원가입 기능 만들기 */}
                 <Button onClick={onSignUpOpen} colorScheme={"red"}>
                   횐가입
                 </Button>
