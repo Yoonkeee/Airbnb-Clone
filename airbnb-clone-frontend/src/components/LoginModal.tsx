@@ -43,7 +43,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const queryClient = useQueryClient();
   const mutation = useMutation(usernameLogin, {
     onSuccess: () => {
-      // data.ok;
       toast({
         title: "ㅎㅇㅎㅇ",
         status: "success",
@@ -54,16 +53,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       queryClient.refetchQueries(["me"]);
       reset();
     },
-    onError: () => {
-      console.log("tt");
-    },
+    // onError: () => {
+    //   console.log("Mutation 에러낫음..ㅠ");
+    // },
   });
   const onSubmit = ({ username, password }: IForm) => {
     mutation.mutate({ username, password });
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal onClose={onClose} isOpen={isOpen}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>로그인 모달창</ModalHeader>
@@ -74,7 +73,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               <InputLeftElement children={<FaUserCheck color={"gray"} />} />
               <Input
                 isInvalid={Boolean(errors.username?.message)}
-                // required
                 {...register("username", { required: "아이디 입력하셔야죠" })}
                 variant={"filled"}
                 placeholder={"아이디 입력하셈"}
@@ -84,7 +82,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               <InputLeftElement children={<FaKey color={"gray"} />} />
               <Input
                 isInvalid={Boolean(errors.password?.message)}
-                // required
                 {...register("password", { required: "비번도 입력하셔야죠" })}
                 type={"password"}
                 variant={"filled"}

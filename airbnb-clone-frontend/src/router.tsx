@@ -5,6 +5,7 @@ import NotFound from "./routes/NotFound";
 import RoomDetail from "./routes/RoomDetail";
 import GithubConfirm from "./routes/GithubConfirm";
 import KakaoConfirm from "./routes/KakaoConfirm";
+import UploadRoom from "./routes/UploadRoom";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,8 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { path: "", element: <Home /> },
+      { path: "rooms/upload", element: <UploadRoom /> },
+
       { path: "rooms/:roomPk", element: <RoomDetail /> },
       {
         path: "social",

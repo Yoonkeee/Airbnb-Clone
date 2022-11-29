@@ -24,6 +24,7 @@ import useUser from "../lib/useUser";
 import { logOut } from "../api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const { userLoading, isLoggedIn, user } = useUser();
@@ -38,6 +39,7 @@ export default function Header() {
     onOpen: onSignUpOpen,
   } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  // TODO: Link Logo to Home
   const logoColor = useColorModeValue("red.500", "red.200");
   const Icon = useColorModeValue(FaMoon, FaSun);
   const toast = useToast();
@@ -67,8 +69,7 @@ export default function Header() {
     },
   });
   const onLogOut = async () => {
-    // const data = await logOut();
-    await logOut();
+    mutation.mutate();
   };
   return (
     <Stack
@@ -107,6 +108,11 @@ export default function Header() {
                 <Avatar size={"md"} src={user?.avatar} />
               </MenuButton>
               <MenuList>
+                {user?.is_host ? (
+                  <Link to={"/rooms/upload"}>
+                    <MenuItem>방 만들기</MenuItem>
+                  </Link>
+                ) : null}
                 <MenuItem onClick={onLogOut}>로그아웃</MenuItem>
               </MenuList>
             </Menu>

@@ -93,7 +93,7 @@ class LogIn(APIView):
         )
         if user:
             auth.login(request, user)
-            return Response({"ok": "어서오세여"})
+            return Response({"ok": "어서오세여"}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
