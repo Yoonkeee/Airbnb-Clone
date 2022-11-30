@@ -55,7 +55,9 @@ class RoomDetailSerializer(ModelSerializer):
         fields = "__all__"
 
     def get_rating(self, room):
-        return room.rating()
+        request = self.context.get("request")
+        if request:
+            return room.rating()
 
     def create(self, validated_data):
         return Room.objects.create(**validated_data)
