@@ -153,7 +153,6 @@ AUTH_USER_MODEL = "users.User"
 MEDIA_ROOT = "uploads"
 MEDIA_URL = "user-uploads/"
 PAGE_SIZE = 3
-# appr flow save validation YN을 주는곳을 찾아보고 mariadb null비교
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
