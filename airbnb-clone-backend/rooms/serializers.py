@@ -11,7 +11,7 @@ from wishlists.models import Wishlist
 class AmenitySerializer(ModelSerializer):
     class Meta:
         model = Amenity
-        fields = ("name", "description")
+        fields = ('pk', "name", "description")
 
 
 class RoomListSerializer(ModelSerializer):
