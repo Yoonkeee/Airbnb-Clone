@@ -3,10 +3,7 @@ import useUser from "../lib/useUser";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface IProtectedPageProps {
-  children: React.ReactNode;
-}
-export default function ProtectedPage({ children }: IProtectedPageProps) {
+export default function useProtectedPage() {
   const { user, isLoggedIn, userLoading } = useUser();
   const navigate = useNavigate();
   useEffect(() => {
@@ -14,5 +11,5 @@ export default function ProtectedPage({ children }: IProtectedPageProps) {
       navigate("/");
     }
   }, [userLoading, isLoggedIn, navigate]);
-  return <>{children}</>;
+  return;
 }
