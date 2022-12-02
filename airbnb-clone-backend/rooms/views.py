@@ -100,7 +100,7 @@ class Rooms(APIView):
             try:
                 with transaction.atomic():
                     room = serializer.save(
-                        onwer=request.user,
+                        owner=request.user,
                         category=category,
                     )
                     amenities = request.data.get("amenities")
@@ -112,7 +112,8 @@ class Rooms(APIView):
             except Exception:
                 raise ParseError("Amenity does not exists")
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class RoomDetail(APIView):

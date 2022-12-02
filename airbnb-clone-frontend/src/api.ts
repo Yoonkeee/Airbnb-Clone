@@ -105,8 +105,10 @@ export interface IUploadRoomVariables {
   category: number;
 }
 export const uploadRoom = (variables: IUploadRoomVariables) =>
-  instance.post("rooms/", variables, {
-    headers: {
-      "X-CSRFToken": Cookies.get("csrftoken") || "",
-    },
-  });
+  instance
+    .post("rooms/", variables, {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);

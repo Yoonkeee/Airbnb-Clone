@@ -36,7 +36,7 @@ export default function Home() {
       ) : null}
       {data?.map((room) => (
         <Room
-          imageUrl={room.photos[0].file}
+          imageUrl={room.photos[0]?.file}
           pk={room.pk}
           // imageUrl="https://a0.muscache.com/im/pictures/miso/Hosting-717134404264905813/original/dfe9fd1e-a010-43c9-b546-0bbc7d59f7f3.jpeg?im_w=720"
           name={room.name}

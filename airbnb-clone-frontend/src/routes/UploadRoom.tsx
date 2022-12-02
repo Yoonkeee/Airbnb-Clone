@@ -32,20 +32,23 @@ import {
 } from "../api";
 import { IAmenity, ICategory, IRoomDetail } from "../types";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export default function UploadRoom() {
+  const navigate = useNavigate();
   const { register, watch, handleSubmit } = useForm<IUploadRoomVariables>();
   const { data: amenities, isLoading: isAmenitiesLoading } = useQuery<
     IAmenity[]
   >(["amenities"], getAmenities);
   const toast = useToast();
   const mutation = useMutation(uploadRoom, {
-    onSuccess: () => {
+    onSuccess: (data: IRoomDetail) => {
       toast({
         status: "success",
-        title: "방 생성됏어요",
+        title: "방 생성됏어요~~",
         position: "bottom",
       });
+      navigate(`/rooms/${data.id}`);
     },
   });
   const { data: categories, isLoading: isCategoriesLoading } = useQuery<
@@ -54,7 +57,6 @@ export default function UploadRoom() {
   const onSubmit = (data: IUploadRoomVariables) => {
     mutation.mutate(data);
   };
-  console.log(watch());
   return (
     <ProtectedPage>
       <HostOnlyPage>
