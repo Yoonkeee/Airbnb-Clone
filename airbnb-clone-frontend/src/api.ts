@@ -121,3 +121,19 @@ export const getUploadURL = () =>
       },
     })
     .then((response) => response.data);
+export interface IUploadImageVariables {
+  file: FileList;
+  uploadURL: string;
+}
+// mutation rule : send variables to mutation should be in object and be first parameter
+export const uploadImage = ({ file, uploadURL }: IUploadImageVariables) => {
+  const form = new FormData();
+  form.append("file", file[0]);
+  return axios
+    .post(uploadURL, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => response.data);
+};
