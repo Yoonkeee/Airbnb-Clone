@@ -45,7 +45,7 @@ export default function RoomDetail() {
             key={index}
           >
             <Skeleton isLoaded={!isLoading} h={"100%"} w={"100%"}>
-              {data?.photos && data.photos.length > 4 ? (
+              {data?.photos[index] ? (
                 <Image
                   objectFit={"cover"}
                   w={"100%"}
@@ -60,9 +60,7 @@ export default function RoomDetail() {
       <HStack w={"40%"} justifyContent={"space-between"} mt={10}>
         <VStack alignItems={"flex-start"}>
           <Skeleton isLoaded={!isLoading} height={"30%"}>
-            <Heading fontSize={"2xl"}>
-              이 집은 {data?.owner.name} 님 꺼임
-            </Heading>
+            <Heading fontSize={"2xl"}>집주인 : {data?.owner.name} 님</Heading>
             <HStack justifyContent={"flex-start"} w={"100%"}>
               <Text>{data?.toilets} 화장실</Text>
               <Text>•</Text>
