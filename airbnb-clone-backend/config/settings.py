@@ -169,4 +169,6 @@ CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000",
                         "http://localhost:3000",
                         'http://localhost']
 GH_SECRET = env("GH_SECRET")
-APPEND_SLASH=True
+APPEND_SLASH = True
+CF_ID = env("CF_ID")
+CF_TOKEN = env("CF_TOKEN")

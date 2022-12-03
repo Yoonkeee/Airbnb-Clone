@@ -112,3 +112,12 @@ export const uploadRoom = (variables: IUploadRoomVariables) =>
       },
     })
     .then((response) => response.data);
+
+export const getUploadURL = () =>
+  instance
+    .post("medias/photos/get-url", null, {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);
