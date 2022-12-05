@@ -22,6 +22,9 @@ import "../calendar.css";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 
+// TODO: 1. 방 수정 기능 만들기
+// TODO: 2. 예약 기능 만들기
+
 export default function RoomDetail() {
   const { roomPk } = useParams();
   const { isLoading, data } = useQuery<IRoomDetail>(["rooms", roomPk], getRoom);
