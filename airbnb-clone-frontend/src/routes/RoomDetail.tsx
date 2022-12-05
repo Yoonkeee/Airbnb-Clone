@@ -18,8 +18,9 @@ import {
 } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import "../calendar.css";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 
 export default function RoomDetail() {
   const { roomPk } = useParams();
@@ -35,6 +36,9 @@ export default function RoomDetail() {
   );
   return (
     <Box pb={40} mt={10} px={{ base: 10, lg: 40 }}>
+      <Helmet>
+        <title>{data ? data.name : "로딩중~~"}</title>
+      </Helmet>
       <Skeleton h={"43px"} w={"25%"} isLoaded={!isLoading}>
         <Heading>{data?.name}</Heading>
       </Skeleton>
@@ -67,7 +71,7 @@ export default function RoomDetail() {
           </GridItem>
         ))}
       </Grid>
-      <Grid gap={20} templateColumns={"2fr 1fr"} maxW="container.lg">
+      <Grid gap={20} templateColumns={"2fr 1.5fr"} maxW="container.lg">
         <Box>
           <HStack justifyContent={"space-between"} mt={10}>
             <VStack alignItems={"flex-start"}>
@@ -134,7 +138,7 @@ export default function RoomDetail() {
             next2Label={null}
           />
           <Button
-            isLoading={isCheckingBooking}
+            isLoading={isCheckingBooking && dates !== undefined}
             disabled={!checkBookingData?.ok}
             w={"100%"}
             colorScheme={"red"}
@@ -144,7 +148,7 @@ export default function RoomDetail() {
             예약해보기
           </Button>
           {!isCheckingBooking && !checkBookingData.ok ? (
-            <Text color={"red.500"}>아쉽게도 이 날짜는 예약이 안되네요</Text>
+            <Text color={"red.500"}>아쉽게도 이 때는 예약이 이미 있네요~~</Text>
           ) : null}
         </Box>
       </Grid>
