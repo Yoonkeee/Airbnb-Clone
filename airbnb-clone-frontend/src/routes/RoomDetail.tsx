@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getRoom, getRoomReviews } from "../api";
+import { checkBooking, getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
 import {
   Avatar,
   Box,
+  Button,
   Container,
   Grid,
   GridItem,
@@ -27,14 +28,11 @@ export default function RoomDetail() {
     IReview[]
   >(["rooms", roomPk, "reviews"], getRoomReviews);
   const [dates, setDates] = useState<Date[]>();
-  useEffect(() => {
-    if (dates) {
-      const [firstDate, secondDate] = dates;
-      const [checkIn] = firstDate.toJSON().split("T");
-      const [checkOut] = secondDate.toJSON().split("T");
-      console.log(checkIn, checkOut);
-    }
-  }, [dates]);
+  const { data: checkBookingData, isLoading: isCheckingBooking } = useQuery(
+    ["check", roomPk, dates],
+    checkBooking,
+    { enabled: dates !== undefined, cacheTime: 0 }
+  );
   return (
     <Box pb={40} mt={10} px={{ base: 10, lg: 40 }}>
       <Skeleton h={"43px"} w={"25%"} isLoaded={!isLoading}>
@@ -135,6 +133,19 @@ export default function RoomDetail() {
             prev2Label={null}
             next2Label={null}
           />
+          <Button
+            isLoading={isCheckingBooking}
+            disabled={!checkBookingData?.ok}
+            w={"100%"}
+            colorScheme={"red"}
+            mt={5}
+            my={5}
+          >
+            예약해보기
+          </Button>
+          {!isCheckingBooking && !checkBookingData.ok ? (
+            <Text color={"red.500"}>아쉽게도 이 날짜는 예약이 안되네요</Text>
+          ) : null}
         </Box>
       </Grid>
     </Box>
