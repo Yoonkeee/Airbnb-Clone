@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 import environ
 import dj_database_url
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 
 env = environ.Env()
 
@@ -190,3 +193,18 @@ GH_SECRET = env("GH_SECRET")
 APPEND_SLASH = True
 CF_ID = env("CF_ID")
 CF_TOKEN = env("CF_TOKEN")
+
+if not DEBUG:
+    sentry_sdk.init(
+        dsn="https://0a6d8d2da4884db5a7cac60845a734a0@o4504277288615936.ingest.sentry.io/4504277298577408",
+        integrations=[
+            DjangoIntegration(),
+        ],
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+    )

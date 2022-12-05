@@ -1,4 +1,3 @@
-from turtle import update
 from django.http import JsonResponse
 from .models import Category
 from django.core import serializers
